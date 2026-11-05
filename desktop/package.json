@@ -1,0 +1,21 @@
+{
+  "name": "opendaw-desktop",
+  "productName": "OpenDAW",
+  "version": "1.5.0",
+  "private": true,
+  "description": "OpenDAW — versão executável para PC, com hospedagem nativa de plugins VST.",
+  "main": "main.cjs",
+  "type": "commonjs",
+  "author": "OpenDAW",
+  "scripts": {
+    "start": "electron .",
+    "selftest": "electron . --selftest",
+    "spike-rt": "electron spike-rt-port.cjs"
+  },
+  "dependencies": {
+    "koffi": "^3.3.6"
+  },
+  "devDependencies": {
+    "electron": "^45.2.3"
+  }
+}

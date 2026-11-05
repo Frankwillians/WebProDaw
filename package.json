@@ -1,5 +1,5 @@
 {
-  "name": "daw-project",
+  "name": "opendaw",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,6 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "test": "node --test src/ desktop/scan.test.cjs",
+    "app": "npm run build && npm --prefix desktop start",
+    "app:test": "npm run build && npm --prefix desktop run selftest",
+    "app:exe": "npm run build && node desktop/build-app.cjs",
     "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {

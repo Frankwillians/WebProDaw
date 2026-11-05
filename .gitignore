@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+release/
 *.local
 
 # Editor directories and files
@@ -22,3 +23,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Saída dos autotestes: áudio, captura de tela e log de cada rodada.
+# Tudo regenerável com `npm run selftest` (desktop/); o ícone do app
+# (desktop/icon.png) não é saída de teste e continua versionado.
+desktop/selftest-*.wav
+desktop/selftest-*.png
+desktop/selftest-out.json
+desktop/selftest-raw.txt

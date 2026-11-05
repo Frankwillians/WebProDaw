@@ -1,0 +1,135 @@
+{
+  "sala": "http://127.0.0.1:5263",
+  "estourouPrazo": false,
+  "avisosDaPagina": [],
+  "estado": {
+    "etapas": [
+      {
+        "nome": "A na sala",
+        "valor": "ctxA=running",
+        "t": 159
+      },
+      {
+        "nome": "testemunha local",
+        "valor": "{\"estadoCtx\":\"running\",\"picoOsc\":0.25}",
+        "t": 21066
+      },
+      {
+        "nome": "track chegou",
+        "valor": "{\"estado\":\"live\",\"mudo\":true,\"rotulo\":\"remote audio\"}",
+        "t": 21563
+      },
+      {
+        "nome": "bytes rtp",
+        "valor": "{\"Brecebido\":[0,20124],\"Benviado\":[0,0],\"Aenviado\":[0,20124],\"cresceuEmB\":true,\"AestaMandando\":true}",
+        "t": 24055
+      },
+      {
+        "nome": "medida 1",
+        "valor": "0",
+        "t": 47056
+      },
+      {
+        "nome": "medida 2",
+        "valor": "0.302 el1=tocando",
+        "t": 70055
+      },
+      {
+        "nome": "medida 3",
+        "valor": "0.3011 el2=tocando",
+        "t": 72893
+      },
+      {
+        "nome": "medida 4",
+        "valor": "0.3012",
+        "t": 75728
+      },
+      {
+        "nome": "sdk",
+        "valor": "{\"canais\":1,\"tem\":true,\"na stream\":0.3013,\"level()\":-10.444,\"com monitor level()\":-10.438,\"com monitor na stream\":0.301,\"monitor é\":\"AUDIO\"}",
+        "t": 84937
+      }
+    ],
+    "ok": true,
+    "feito": true,
+    "sala": "spikeneyu",
+    "ctrl": {
+      "estadoCtx": "running",
+      "picoOsc": 0.25
+    },
+    "track": {
+      "estado": "live",
+      "mudo": true,
+      "rotulo": "remote audio"
+    },
+    "rede": {
+      "Brecebido": [
+        0,
+        20124
+      ],
+      "Benviado": [
+        0,
+        0
+      ],
+      "Aenviado": [
+        0,
+        20124
+      ],
+      "cresceuEmB": true,
+      "AestaMandando": true
+    },
+    "medidas": {
+      "so WebAudio": 0,
+      "com audio mudo": 0.302,
+      "com audio volume 0": 0.3011,
+      "stream unica com audio": 0.3012
+    },
+    "el1": "tocando",
+    "el2": "tocando",
+    "sdk": {
+      "canais": 1,
+      "tem": true,
+      "na stream": 0.3013,
+      "level()": -10.444,
+      "com monitor level()": -10.438,
+      "com monitor na stream": 0.301,
+      "monitor é": "AUDIO"
+    },
+    "resumo": {
+      "ctrl": 0.25,
+      "rede": {
+        "Brecebido": [
+          0,
+          20124
+        ],
+        "Benviado": [
+          0,
+          0
+        ],
+        "Aenviado": [
+          0,
+          20124
+        ],
+        "cresceuEmB": true,
+        "AestaMandando": true
+      },
+      "medidas": {
+        "so WebAudio": 0,
+        "com audio mudo": 0.302,
+        "com audio volume 0": 0.3011,
+        "stream unica com audio": 0.3012
+      },
+      "sdk": {
+        "canais": 1,
+        "tem": true,
+        "na stream": 0.3013,
+        "level()": -10.444,
+        "com monitor level()": -10.438,
+        "com monitor na stream": 0.301,
+        "monitor é": "AUDIO"
+      },
+      "el1": "tocando",
+      "el2": "tocando"
+    }
+  }
+}

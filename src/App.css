@@ -21,6 +21,42 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 12px;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* REAPER-like thin dark scrollbars across every panel. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #414141 #171717;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: #171717;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #414141;
+  border: 2px solid #171717;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #55718f;
+}
+
+::-webkit-scrollbar-corner {
+  background: #171717;
+}
+
+:focus-visible {
+  outline: 1px solid rgba(121, 168, 214, 0.75);
+  outline-offset: 1px;
 }
 
 button {
@@ -67,6 +103,14 @@ button {
   flex: 1;
   align-items: stretch;
   height: 100%;
+}
+
+/* The executable gets the operating system's own menu bar, and that bar is
+   built from these very rows — so in the native shell they stop taking a second
+   line but stay in the document, because it is what the native items read and
+   what they press. */
+.menu-bar.native .menu-items {
+  display: none;
 }
 
 .menu-item {
@@ -116,6 +160,11 @@ button {
 .dropdown button:hover {
   background: #444;
   color: #fff;
+}
+
+.dropdown button.on {
+  color: #a8e6b8;
+  background: #1e2b22;
 }
 
 .device-status {
@@ -212,6 +261,18 @@ button {
   box-shadow: inset 0 0 6px rgba(85, 255, 85, 0.5);
 }
 
+.transport-btn.count-in-btn {
+  width: 42px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.transport-btn.count-in-btn.on {
+  color: #ffd166;
+  box-shadow: inset 0 0 6px rgba(255, 209, 102, 0.4);
+}
+
 @keyframes pulse {
   from {
     opacity: 1;
@@ -304,6 +365,168 @@ button {
 
 .tcp-track.armed {
   box-shadow: inset 0 0 0 1px rgba(255, 51, 51, 0.5);
+}
+
+/* Folder header row in the TCP: one compact line, no mixer controls. */
+.tcp-folder {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+  padding: 3px 6px 3px 4px;
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, #35353b, #26262b);
+  border-bottom: 1px solid #141414;
+  border-left: 4px solid #666;
+}
+
+.tcp-folder.selected {
+  box-shadow: inset 0 0 0 1px #79a8d6;
+}
+
+.tcp-folder.drag-over {
+  box-shadow: inset 0 2px 0 0 #6fcf97, inset 0 0 0 1px rgba(111, 207, 151, 0.45);
+}
+
+.folder-fold {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  font-size: 8px;
+  line-height: 1;
+  color: #cfd6de;
+  background: #1f1f23;
+  border: 1px solid #3d3d44;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.folder-fold:hover {
+  color: #fff;
+  border-color: #79a8d6;
+}
+
+.folder-title {
+  font-weight: 600;
+  color: #e8eef4;
+}
+
+.folder-count {
+  flex: 0 0 auto;
+  font-size: 9px;
+  color: #7f8894;
+  white-space: nowrap;
+}
+
+.folder-add,
+.folder-remove {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  font-size: 11px;
+  line-height: 1;
+  color: #9aa4ae;
+  background: #1f1f23;
+  border: 1px solid #3d3d44;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.folder-add:hover {
+  color: #a8e6b8;
+  border-color: #4c8a5c;
+}
+
+.folder-remove:hover {
+  color: #ff8a8a;
+  border-color: #7a3b3b;
+}
+
+/* Small color swatch next to the track name. */
+.track-color {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid #4a4a52;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.track-color::-webkit-color-swatch-wrapper {
+  padding: 1px;
+}
+
+.track-color::-webkit-color-swatch {
+  border: none;
+  border-radius: 1px;
+}
+
+/* Rows that sit inside a folder read as indented under the header. The arrange
+   lane is deliberately NOT indented: its clips are positioned in percentages
+   against the ruler, and any horizontal offset would desync them. */
+.tcp-track.in-folder {
+  padding-left: 18px;
+}
+
+.arrangement-folder {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  flex-shrink: 0;
+  padding: 0 8px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #282828;
+  border-left: 4px solid #666;
+  position: relative;
+  cursor: pointer;
+}
+
+.arrangement-folder.selected {
+  box-shadow: inset 0 0 0 1px #79a8d6;
+}
+
+.folder-band-fold {
+  font-size: 8px;
+  color: #cfd6de;
+}
+
+.folder-band-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #e8eef4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tcp-track.drag-over {
+  box-shadow: inset 0 2px 0 0 #79a8d6, inset 0 0 0 1px rgba(121, 168, 214, 0.4);
+  background: linear-gradient(to bottom, #33404d, #26313b);
+}
+
+.track-grip {
+  cursor: grab;
+  color: #6a6a6a;
+  font-size: 13px;
+  line-height: 1;
+  padding: 2px 3px;
+  border-radius: 3px;
+  user-select: none;
+  flex: none;
+}
+
+.track-grip:hover {
+  color: #cfe0f2;
+  background: #383838;
+}
+
+.track-grip:active {
+  cursor: grabbing;
 }
 
 .tcp-header {
@@ -525,6 +748,158 @@ button {
   overflow: hidden;
 }
 
+.lane-import {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 14px;
+  font-size: 11px;
+  color: #8aa0b4;
+  background: rgba(45, 79, 108, 0.28);
+  border: 1px dashed #528bbd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.lane-import:hover {
+  background: rgba(82, 139, 189, 0.34);
+  color: #d5e7f7;
+}
+
+.arrangement-lane:hover {
+  filter: brightness(1.08);
+}
+
+/* ------------------------- AUTOMAÇÃO DE VOLUME ------------------------- */
+/* Opening a lane grows the track row instead of squeezing the clip: the
+   waveform keeps the height it always had and the envelope gets its own strip. */
+.arrangement-lane.auto-open {
+  height: 158px;
+}
+
+.lane-auto {
+  position: absolute;
+  top: 3px;
+  right: 8px;
+  padding: 1px 6px;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: #5d6b78;
+  background: rgba(30, 30, 30, 0.85);
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.lane-auto:hover {
+  color: #cfe2f3;
+  border-color: #528bbd;
+}
+
+.lane-auto.on {
+  color: #0d1116;
+  background: #79a8d6;
+  border-color: #79a8d6;
+}
+
+/* A lane that already has points stays visible even when collapsed. */
+.lane-auto.drawn:not(.on) {
+  color: #79a8d6;
+  border-color: #3f5f7d;
+}
+
+.automation-lane {
+  position: absolute;
+  top: 110px;
+  left: 0;
+  right: 0;
+  /* 47 with a 1px top border leaves exactly AUTO_LANE_H of drawing surface,
+     so the SVG's dB units and the dots' pixels are the same number. */
+  height: 47px;
+  background: rgba(12, 14, 17, 0.55);
+  border-top: 1px solid #2a2a2a;
+  cursor: crosshair;
+  overflow: hidden;
+}
+
+.auto-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.auto-fill {
+  fill-opacity: 0.16;
+  stroke: none;
+}
+
+.auto-line {
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+/* The line in the middle is the fader: 0 dB means "no change". */
+.auto-zero {
+  position: absolute;
+  top: 23px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(to right, #4a5563 0 6px, transparent 6px 12px);
+  pointer-events: none;
+}
+
+.auto-point {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border: 1px solid #0d1116;
+  border-radius: 50%;
+  cursor: grab;
+  z-index: 3;
+}
+
+.auto-point:hover {
+  transform: scale(1.25);
+}
+
+.auto-point:active {
+  cursor: grabbing;
+}
+
+.auto-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: #4f5b66;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.auto-readout {
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  font-size: 9px;
+  color: #8aa0b4;
+  background: rgba(13, 17, 22, 0.7);
+  padding: 0 4px;
+  border-radius: 3px;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
 .waveform {
   width: 100%;
   height: 100%;
@@ -535,49 +910,6 @@ button {
   padding: 24px;
   color: #555;
   font-size: 11px;
-}
-
-/* ------------------------- SEQUENCER ------------------------- */
-.seq-grid {
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.seq-row {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.seq-label {
-  width: 56px;
-  color: #aaa;
-  font-weight: bold;
-  font-size: 10px;
-}
-
-.seq-step {
-  width: 25px;
-  height: 25px;
-  background: #2a2a2a;
-  border: 1px solid #111;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.seq-step:hover {
-  border-color: #79a8d6;
-}
-
-.seq-step.active {
-  background: #79a8d6;
-}
-
-.seq-step.playing {
-  box-shadow: 0 0 5px #fff;
-  border-color: #fff;
 }
 
 /* ------------------------- MIXER DOCK ------------------------- */
@@ -598,6 +930,54 @@ button {
   font-weight: bold;
   color: #888;
   border-bottom: 1px solid #111;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Small action inside the dock's title bar; it must not grow or push the label. */
+.dock-btn {
+  background: #2d2d2d;
+  border: 1px solid #444;
+  border-radius: 2px;
+  color: #b8c4d0;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 1px 6px;
+  cursor: pointer;
+}
+
+.dock-btn:hover {
+  background: #3a3a3a;
+  color: #e6eef6;
+}
+
+.mcp-channel.group {
+  background: linear-gradient(to bottom, #26313a, #1b2228);
+}
+
+/* A name you can type into, but it must still read like a label. */
+.mcp-group-name {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #cfe0ee;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.mcp-group-name:hover,
+.mcp-group-name:focus {
+  background: #10161b;
+  border-color: #3c4c5c;
+  outline: none;
+}
+
+.mcp-channel.group .mcp-input {
+  color: #9ec4e0;
 }
 
 .mixer-channels {
@@ -661,6 +1041,13 @@ button {
   font-size: 9px;
 }
 
+/* The headphone glyph needs a touch more room than the m/s letters around it. */
+.mcp-buttons .tcp-btn.btn-mon {
+  min-width: 20px;
+  padding: 0 1px;
+  font-size: 11px;
+}
+
 .mcp-remove {
   width: 100%;
   flex: 0 0 auto;
@@ -722,6 +1109,22 @@ button {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
 }
 
+/* Only the track's rack needs the extra width. The smaller dialogs that share
+   .fx-window keep their original size. */
+.track-fx-window {
+  width: min(1120px, 96vw);
+  max-width: 96vw;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.track-fx-window .fx-body-scroll {
+  max-height: min(76vh, 820px);
+  min-height: 0;
+  gap: 10px;
+}
+
 .fx-header {
   background: #181818;
   padding: 8px 12px;
@@ -779,8 +1182,50 @@ button {
 
 .track-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 3px;
   margin-top: 1px;
+}
+
+.clip-actions {
+  margin-top: 0;
+}
+
+.clip-actions .mini-btn {
+  font-size: 8.5px;
+  letter-spacing: 0.2px;
+}
+
+/* The take shelf: a lane can hold several recorded passes. */
+.take-actions {
+  margin-top: 0;
+  gap: 3px;
+}
+
+.take-actions .mini-btn {
+  padding: 1px 5px;
+  font-size: 9px;
+}
+
+.mini-select {
+  min-width: 0;
+  flex: 1 1 auto;
+  padding: 1px 3px;
+  background: #2a2a2a;
+  color: #dcdcdc;
+  border: 1px solid #454545;
+  border-radius: 3px;
+  font-size: 8.5px;
+}
+
+.mini-select:focus {
+  outline: none;
+  border-color: #79a8d6;
+}
+
+.mini-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .mini-btn {
@@ -857,6 +1302,43 @@ button {
   color: #79a8d6;
 }
 
+/* Collapsed: one line, and the spare hint text truncates instead of pushing
+   the toggle off the strip. Expanded keeps the original wrapping map. */
+.status-strip:not(.expanded) {
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+
+.status-strip .status-stats {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.status-strip:not(.expanded) .status-brief {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.status-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 1px 8px;
+  font-size: 9px;
+  color: #7f9db8;
+  background: #1b1b1b;
+  border: 1px solid #2c2c2c;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.status-toggle:hover {
+  color: #bfe0ff;
+  border-color: #3f6d95;
+}
+
 .transport-btn.toggle {
   color: #777;
 }
@@ -865,6 +1347,21 @@ button {
   color: #55ff55;
   box-shadow: inset 0 0 6px rgba(85, 255, 85, 0.45);
   border-color: #2f6b2f;
+}
+
+/* Punch-in reads as text rather than an icon, so it gets its own width, and
+   its own colour: orange is the arrangement's "this region is armed" hue. */
+.transport-btn.punch-btn {
+  width: 40px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.transport-btn.punch-btn.on {
+  color: #ffab5e;
+  box-shadow: inset 0 0 6px rgba(255, 159, 69, 0.45);
+  border-color: #6b452f;
 }
 
 .reaper-btn.danger {
@@ -953,13 +1450,88 @@ button {
   outline: 1px solid #79a8d6;
 }
 
+/* Channel picker on the second patch row. It keeps its own width so the print
+   buttons next to it are never squeezed into a clipped "S". */
+.ch-select {
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  background: #141414;
+  border: 1px solid #3a3a3a;
+  color: #c8c8c8;
+  font-size: 10px;
+  border-radius: 2px;
+  padding: 0 3px;
+}
+
+.ch-select:focus {
+  outline: 1px solid #79a8d6;
+}
+
+/* The row only exists once a device is chosen, so it is allowed to be a touch
+   tighter than the row above it. */
+.ch-row {
+  gap: 4px;
+}
+
+.ch-seg {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 1px;
+}
+
+.ch-seg-btn {
+  width: 17px;
+  height: 20px;
+  padding: 0;
+  font-size: 9px;
+  font-weight: 700;
+  border: 1px solid #3a3a3a;
+  border-radius: 2px;
+  background: #141414;
+  color: #7d7d7d;
+  cursor: pointer;
+}
+
+.ch-seg-btn:hover:not(:disabled) {
+  background: #1f1f1f;
+}
+
+.ch-seg-btn.on {
+  border-color: #4a6d8c;
+  background: #1a2836;
+  color: #a8d0f0;
+}
+
+/* SECO / FX carry words, not single letters: which signal a take prints is a
+   decision the producer makes with a glance, and "S" could be either. */
+.ch-seg-wide {
+  width: auto;
+  padding: 0 5px;
+  letter-spacing: 0.3px;
+}
+
+/* Green only when the device really handed over that channel. */
+.ch-seg-btn.live {
+  border-color: #2f5f3f;
+  background: #16281c;
+  color: #7fd79a;
+}
+
+.ch-seg-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Monitor lives on the track as a headphone, not as a word: the TCP is narrow
+   and 🎧 reads at a glance in any language. */
 .mon-btn {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 4px;
   height: 20px;
-  padding: 0 6px;
+  padding: 0 5px;
   font-size: 9px;
   font-weight: bold;
   letter-spacing: 0.4px;
@@ -994,6 +1566,11 @@ button {
   box-shadow: inset 0 0 2px #000;
 }
 
+.mon-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
 .mon-btn.on .mon-led {
   background: #4ade80;
   box-shadow: 0 0 5px #4ade80;
@@ -1001,6 +1578,114 @@ button {
 
 .tcp-controls-row .tcp-label {
   flex: 0 0 24px;
+}
+
+/* Routing row: two selects and, when a sidechain is live, one depth slider.
+   Everything shrinks instead of pushing the TCP wider than the lane. */
+.route-row {
+  gap: 4px;
+}
+
+.route-row .tcp-label {
+  flex: 0 0 auto;
+  width: auto;
+  letter-spacing: 0.04em;
+}
+
+/* The sidechain row carries the chips, the picker and the depth slider. Three
+   sources is a normal session, not an edge case, so the chips wrap onto a second
+   line and the label stays lined up with the first one instead of drifting to
+   the middle of a two-line block. */
+.side-row {
+  align-items: flex-start;
+  row-gap: 3px;
+}
+
+.side-row .tcp-label {
+  line-height: 19px;
+}
+
+.side-row .duck-slider,
+.side-row .value-badge {
+  margin-top: 0;
+  align-self: center;
+}
+
+.route-select {
+  flex: 1 1 0;
+  min-width: 78px;
+  height: 19px;
+  background: #141414;
+  border: 1px solid #3a3a3a;
+  border-radius: 2px;
+  color: #c8c8c8;
+  font-size: 9px;
+  padding: 0 3px;
+}
+
+.route-select:focus {
+  outline: 1px solid #79a8d6;
+}
+
+.duck-slider {
+  flex: 0 1 64px;
+  min-width: 48px;
+  accent-color: #ff9f45;
+}
+
+/* Sidechain sources: the chips already chosen, then one small "+ fonte" that
+   adds another. The row keeps the same height as the group select beside it, so
+   the TCP never drifts out of line with the lane. A chip shows the source's
+   track number in its own colour and is the button that removes it.
+   The floor is the chip plus the picker: below that the last chip would be cut
+   in half, so the row wraps instead of shrinking. */
+.duck-sources {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  min-width: 98px;
+}
+
+.duck-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 19px;
+  padding: 0 3px;
+  background: #1c1c1c;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #d6d6d6;
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.duck-chip em {
+  font-style: normal;
+  color: #8a8a8a;
+  font-size: 10px;
+}
+
+.duck-chip:hover {
+  background: #2a2a2a;
+}
+
+.duck-chip:hover em {
+  color: #e08a7a;
+}
+
+.duck-add {
+  flex: 0 0 auto;
+  width: 62px;
+}
+
+.duck-add:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 .btn-mon.on {
@@ -1025,12 +1710,186 @@ button {
 }
 
 .fx-section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: #79a8d6;
   border-bottom: 1px solid #3a3a3a;
   padding-bottom: 4px;
+}
+
+.fx-section-hint {
+  font-size: 9px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #666;
+}
+
+.preset-select {
+  background: #262626;
+  color: #86efac;
+  border: 1px solid #166534;
+  border-radius: 3px;
+  font-size: 9px;
+  padding: 1px 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.preset-select:hover {
+  background: #1f2937;
+  border-color: #22c55e;
+}
+
+.signal-chain {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  gap: 14px 24px;
+  min-width: 0;
+  margin: 2px 0;
+  padding: 14px;
+  border: 1px solid #343e3a;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(76, 110, 91, 0.12), transparent 42%),
+    linear-gradient(180deg, #1d2321, #171b1a);
+  box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+.signal-chain > * {
+  position: relative;
+  min-width: 0;
+}
+
+.signal-chain > * + *::before {
+  content: '›';
+  position: absolute;
+  top: 50%;
+  left: -18px;
+  transform: translateY(-50%);
+  color: #658176;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.chain-endpoint {
+  align-self: center;
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border: 1px dashed #3a5a48;
+  border-radius: 999px;
+  background: #14211a;
+  color: #7dd3a0;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.chain-add {
+  align-self: stretch;
+  flex: 0 1 148px;
+  width: 148px;
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 9px;
+  border: 1px dashed #4c6a5a;
+  border-radius: 8px;
+  background: rgba(31, 48, 39, 0.56);
+  color: #9ac7ad;
+}
+
+.chain-add:hover {
+  border-color: #79b18f;
+  background: rgba(38, 62, 48, 0.72);
+}
+
+.chain-add.complete {
+  opacity: 0.55;
+}
+
+.chain-add-plus {
+  font-size: 25px;
+  font-weight: 300;
+  line-height: 0.8;
+}
+
+.chain-add-select {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 3px;
+  border: 1px solid #456453;
+  border-radius: 4px;
+  background: #1d2923;
+  color: #b8dfc7;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.chain-add-hint {
+  color: #6f9480;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.chain-slot {
+  border-left-width: 3px;
+  border-left-color: #4b5563;
+}
+
+.chain-slot.bypassed {
+  opacity: 0.62;
+  border-style: dashed;
+}
+
+.chain-hint {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #6b7280;
+  font-size: 9px;
+}
+
+.chain-mix {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chain-mix label {
+  width: 30px;
+  color: #888;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chain-mix .fx-mix-slider {
+  flex: 1;
+}
+
+.chain-mix .value-badge {
+  min-width: 38px;
+  text-align: right;
+}
+
+.mini-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .plugin-actions {
@@ -1042,11 +1901,6 @@ button {
 .reaper-btn.nam-btn {
   border-color: #15803d;
   color: #86efac;
-}
-
-.reaper-btn.vst-btn {
-  border-color: #4a3a1f;
-  color: #d6b16a;
 }
 
 .plugin-slot {
@@ -1076,6 +1930,20 @@ button {
   padding: 0 3px;
 }
 
+.plugin-index {
+  flex: 0 0 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #aaa;
+  font-size: 9px;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
 .plugin-badge {
   font-size: 8px;
   font-weight: bold;
@@ -1099,9 +1967,14 @@ button {
   color: #86efac;
 }
 
-.plugin-badge.vst {
-  background: #4a3a1f;
-  color: #fcd34d;
+.plugin-badge.builtin {
+  background: #3a2a1f;
+  color: #f0b775;
+}
+
+.plugin-badge.par {
+  background: #1f3444;
+  color: #7dd3fc;
 }
 
 .plugin-name {
@@ -1155,268 +2028,8 @@ button {
   background: #2a2a2a;
 }
 
-/* ------------------------- DRUM MACHINE ------------------------- */
-.drum-machine {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 14px;
-  flex: 0 0 auto;
-}
-
-.dm-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: #181818;
-  border-bottom: 1px solid #111;
-}
-
-.dm-title {
-  color: #79a8d6;
-  font-weight: bold;
-  font-size: 11px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-}
-
-.dm-hint {
-  color: #666;
-  font-size: 10px;
-}
-
-.dm-tools {
-  margin-left: auto;
-  display: flex;
-  gap: 6px;
-}
-
-.dm-tools .mini-btn {
-  flex: 0 0 auto;
-  height: 22px;
-  padding: 0 10px;
-}
-
-.dm-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 12px;
-}
-
-.dm-header {
-  padding-top: 8px;
-}
-
-.dm-label {
-  width: 72px;
-  flex: 0 0 72px;
-  font-size: 10px;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  color: #999;
-}
-
-.dm-header .dm-label {
-  color: #5f5f5f;
-  font-size: 9px;
-}
-
-.dm-stepnum {
-  width: 26px;
-  flex: 0 0 26px;
-  text-align: center;
-  font-size: 9px;
-  color: #666;
-  font-family: ui-monospace, Consolas, monospace;
-}
-
-.dm-stepnum.beat {
-  color: #9ab;
-}
-
-.dm-stepnum.playing {
-  color: #55ff55;
-  text-shadow: 0 0 6px rgba(85, 255, 85, 0.8);
-}
-
-.dm-pad {
-  width: 26px;
-  height: 26px;
-  flex: 0 0 26px;
-  border-radius: 3px;
-  border: 1px solid #101010;
-  background: linear-gradient(to bottom, #333, #242424);
-  cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  padding: 0;
-}
-
-.dm-pad.beat {
-  border-color: #454545;
-}
-
-.dm-pad:hover {
-  border-color: #79a8d6;
-}
-
-.dm-pad.playing {
-  box-shadow: 0 0 8px rgba(85, 255, 85, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-}
-
-.dm-pad.accent {
-  outline: 2px solid rgba(255, 255, 255, 0.65);
-  outline-offset: -2px;
-}
-
-.dm-mute {
-  width: 26px;
-  height: 24px;
-  flex: 0 0 26px;
-  margin-left: 4px;
-  font-size: 9px;
-  font-weight: bold;
-  background: #2c2c2c;
-  border: 1px solid #111;
-  color: #888;
-  border-radius: 2px;
-  cursor: pointer;
-  padding: 0;
-}
-
-.dm-mute:hover {
-  color: #fff;
-}
-
-.dm-mute.off {
-  background: #d97706;
-  color: #fff;
-}
-
-.dm-lane-tools {
-  width: 30px;
-  flex: 0 0 30px;
-  text-align: center;
-  font-size: 9px;
-  color: #5f5f5f;
-}
-
-/* ------------------------- PIANO ROLL ------------------------- */
-.piano-roll {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  flex: 1;
-}
-
-.pr-head {
-  display: flex;
-  align-items: center;
-  padding: 4px 12px 4px 0;
-  background: #181818;
-  border-bottom: 1px solid #111;
-  overflow: hidden;
-}
-
-.pr-key-spacer {
-  width: 56px;
-  flex: 0 0 56px;
-}
-
-.pr-head .dm-stepnum {
-  width: 32px;
-  flex: 0 0 32px;
-}
-
-.pr-body {
-  display: flex;
-  overflow: auto;
-  flex: 1;
-  min-height: 0;
-}
-
-.pr-keys {
-  position: sticky;
-  left: 0;
-  z-index: 3;
-  flex: 0 0 56px;
-  width: 56px;
-  background: #161616;
-}
-
-.pr-key {
-  height: 13px;
-  width: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 3px;
-  font-size: 7px;
-  font-family: ui-monospace, Consolas, monospace;
-  border-bottom: 1px solid #0c0c0c;
-  box-sizing: border-box;
-}
-
-.pr-key.white {
-  background: linear-gradient(to bottom, #e8e8e8, #c9c9c9);
-  color: #333;
-}
-
-.pr-key.black {
-  width: 34px;
-  margin-left: auto;
-  background: linear-gradient(to bottom, #2e2e2e, #101010);
-  color: #999;
-}
-
-.pr-grid {
-  display: flex;
-  flex-direction: column;
-  flex: 0 0 auto;
-}
-
-.pr-row {
-  display: flex;
-  height: 13px;
-}
-
-.pr-row.black .pr-cell {
-  background: #191919;
-}
-
-.pr-cell {
-  width: 32px;
-  flex: 0 0 32px;
-  height: 13px;
-  padding: 0;
-  background: #212121;
-  border: none;
-  border-right: 1px solid #2c2c2c;
-  border-bottom: 1px solid #1b1b1b;
-  cursor: pointer;
-  box-sizing: border-box;
-}
-
-.pr-cell.beat {
-  border-left: 1px solid #3a3a3a;
-}
-
-.pr-cell:hover {
-  background: #33404d;
-}
-
-.pr-cell.on {
-  background: linear-gradient(to bottom, #9ed8ff, #4f9bd8);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-}
-
-.pr-cell.playing {
-  box-shadow: inset 0 0 0 1px rgba(85, 255, 85, 0.85);
-}
-
-/* ------------------------- EXPORT / VST MODALS ------------------------- */
-.export-window,
-.vst-window {
+/* ------------------------- EXPORT MODAL ------------------------- */
+.export-window {
   width: 580px;
 }
 
@@ -1442,6 +2055,16 @@ button {
   background: #22303d;
 }
 
+/* Nothing to bounce here (a folder row), so the choice is visibly unavailable. */
+.export-option.disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.export-option.disabled input {
+  pointer-events: none;
+}
+
 .export-option span {
   display: flex;
   flex-direction: column;
@@ -1459,44 +2082,153 @@ button {
   font-size: 10px;
 }
 
-.vst-file {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #1b1b1b;
-  border: 1px solid #333;
-  border-radius: 3px;
-  padding: 8px 10px;
-}
-
-.vst-name {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e5e5e5;
-  font-weight: bold;
-}
-
-.vst-meta {
-  color: #888;
-  font-size: 10px;
-  white-space: nowrap;
-}
-
-.vst-alternatives {
-  margin: 0 0 0 18px;
-  color: #9a9a9a;
-  font-size: 10px;
-  line-height: 1.6;
+/* The reading of the file that was just written: INT / pico / máx / LRA. */
+.export-report {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  max-height: 210px;
+  overflow-y: auto;
 }
 
-.vst-alternatives strong {
-  color: #cfe6ff;
+.report-row {
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 7px 10px 8px;
+}
+
+.report-name {
+  color: #ddd;
+  font-size: 11px;
+  margin-bottom: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* One column per reading, and the row wraps instead of clipping when the window
+   is narrow: five numbers squeezed into four columns is four numbers read wrong. */
+.report-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: 4px 10px;
+}
+
+.report-values span {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.report-values span > em {
+  color: #7d7d7d;
+  font-size: 9px;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.report-values strong {
+  color: #79a8d6;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.report-warning,
+.report-target {
+  color: #d6b16a;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.report-target {
+  color: #888;
+}
+
+/* ------------------------- AUTOSAVE VERSIONS ------------------------- */
+.versions-window {
+  width: 560px;
+}
+
+.version-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.version-row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 6px 9px;
+}
+
+.version-when {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.version-when strong {
+  color: #ddd;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.version-when em {
+  color: #7d7d7d;
+  font-style: normal;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.version-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.version-label {
+  color: #b8c8dd;
+  font-size: 11px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.version-count {
+  color: #888;
+  font-size: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.version-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.version-actions .reaper-btn {
+  padding: 3px 8px;
+  font-size: 11px;
 }
 
 /* ------------------------- SONG TIMELINE ------------------------- */
@@ -1518,17 +2250,6 @@ button {
   font-size: 12px;
 }
 
-.dm-bar {
-  color: #4ade80;
-  font-size: 9px;
-  font-family: ui-monospace, Consolas, monospace;
-  border: 1px solid #2c4a36;
-  background: #14251b;
-  padding: 1px 5px;
-  border-radius: 2px;
-  white-space: nowrap;
-}
-
 .ruler-mark {
   overflow: hidden;
   white-space: nowrap;
@@ -1539,3 +2260,3196 @@ button {
 .audio-item {
   max-width: 100%;
 }
+
+.clip-draggable {
+  cursor: grab;
+}
+
+.clip-draggable:active {
+  cursor: grabbing;
+}
+
+/* ------------------------- FX RACK UNITS ------------------------- */
+.fx-rack-unit {
+  background: #1e1e1e;
+  border: 1px solid #383838;
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fx-unit-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fx-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.fx-unit-label {
+  font-weight: bold;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fx-unit-label.on {
+  color: #79a8d6;
+}
+
+.fx-mix-slider {
+  flex: 1;
+  max-width: 150px;
+  accent-color: #79a8d6;
+}
+
+.fx-unit-params {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-left: 24px;
+  border-left: 2px solid #2c2c2c;
+}
+
+.fx-unit-params .fx-param {
+  background: #181818;
+  padding: 5px 8px;
+  border-radius: 2px;
+}
+
+.fx-unit-params .fx-param label {
+  font-size: 9px;
+  color: #999;
+  min-width: 60px;
+}
+
+.fx-unit-params .fx-param input[type='range'] {
+  flex: 1;
+  max-width: 200px;
+  accent-color: #79a8d6;
+}
+
+.fx-unit-params .value-badge {
+  min-width: 50px;
+  font-size: 9px;
+}
+
+/* ------------------------- MARKER EDITING MODAL ------------------------- */
+.marker-edit-window,
+.marker-create-window {
+  min-width: 360px;
+}
+
+.marker-edit-window .fx-body,
+.marker-create-window .fx-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ------------------------- TIMELINE MARKERS ------------------------- */
+.timeline-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  cursor: pointer;
+  transition: width 0.15s ease;
+}
+
+.timeline-marker:hover {
+  width: 3px;
+}
+
+.timeline-marker.region {
+  width: auto;
+  cursor: ew-resize;
+}
+
+.marker-flag {
+  position: absolute;
+  top: 2px;
+  left: -1px;
+  transform: translateX(-100%);
+  padding: 2px 6px;
+  border-radius: 3px 0 0 3px;
+  font-size: 9px;
+  font-weight: bold;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.region-body {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.3;
+  border-radius: 2px;
+}
+
+.region-body:hover {
+  opacity: 0.5;
+}
+
+/* ------------------------- MODAL IMPROVEMENTS ------------------------- */
+.marker-edit-window .fx-param,
+.marker-create-window .fx-param {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marker-edit-window .fx-param label,
+.marker-create-window .fx-param label {
+  min-width: 80px;
+  font-size: 11px;
+  color: #ccc;
+}
+
+.marker-edit-window .fx-param input[type="text"],
+.marker-edit-window .fx-param input[type="number"],
+.marker-create-window .fx-param input[type="text"],
+.marker-create-window .fx-param input[type="number"] {
+  flex: 1;
+  max-width: 200px;
+}
+
+.marker-edit-window .fx-param input[type="color"],
+.marker-create-window .fx-param input[type="color"] {
+  width: 40px;
+  height: 28px;
+  border: 1px solid #383838;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* ------------------- TIMELINE (REAPER-ish ruler / playhead / clock) ------------------- */
+.ruler-bar {
+  height: 28px;
+  user-select: none;
+  touch-action: none;
+}
+
+.ruler-mark {
+  position: relative;
+}
+
+.ruler-num {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #9fb4c8;
+}
+
+/* The final bar can sit half-cut at narrow widths; pull its number back to the
+   right edge of the mark so it stays readable instead of spilling out of view. */
+.ruler-mark:last-child .ruler-num {
+  left: auto;
+  right: 3px;
+}
+
+.ruler-ticks i {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 8px;
+  background: #4e4e4e;
+}
+
+.ruler-ticks i:nth-child(1) { left: 25%; }
+.ruler-ticks i:nth-child(2) { left: 50%; height: 10px; background: #5a5a5a; }
+.ruler-ticks i:nth-child(3) { left: 75%; }
+
+.arrangement-lane {
+  background-image:
+    linear-gradient(to right, rgba(200, 220, 240, 0.14) 1px, transparent 1px),
+    linear-gradient(to right, rgba(200, 220, 240, 0.05) 1px, transparent 1px);
+}
+
+.playhead-knob {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #55ff55;
+  filter: drop-shadow(0 0 4px rgba(85, 255, 85, 0.8));
+}
+
+.playhead.scrub-ghost {
+  background: #ffd166;
+  box-shadow: 0 0 8px rgba(255, 209, 102, 0.9);
+  opacity: 0.9;
+  z-index: 7;
+}
+
+.display-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-width: 110px;
+  padding: 2px 10px;
+  background: #0c0f13;
+  border: 1px solid #2c343d;
+  border-radius: 4px;
+  color: inherit;
+  letter-spacing: normal;
+}
+
+.clock-main {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #68e86a;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 6px rgba(104, 232, 106, 0.35);
+  line-height: 1.1;
+}
+
+.clock-sub {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  color: #8fa8bd;
+  letter-spacing: 1px;
+}
+
+/* ------------------- SIGNAL CHAIN — AMPLITUBE-ISH CARDS / KNOBS ------------------- */
+.chain-card {
+  background: linear-gradient(180deg, #2e2e33 0%, #212126 45%, #1a1a1e 100%);
+  border: 1px solid #46464d;
+  border-radius: 8px;
+  padding: 8px 10px 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
+.chain-card.bypassed {
+  opacity: 0.55;
+  border-style: dashed;
+}
+
+.chain-card.drop-target {
+  outline: 2px dashed #8ab4f8;
+  outline-offset: 2px;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: grab;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #3a3a40;
+  margin-bottom: 8px;
+}
+
+.card-head:active {
+  cursor: grabbing;
+}
+
+.card-idx {
+  font-size: 10px;
+  color: #6b6b72;
+  min-width: 12px;
+}
+
+.card-kind {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.card-kind.kind-fx {
+  background: #2c402c;
+  color: #7fc47f;
+  border: 1px solid #4d6b4d;
+}
+
+.card-kind.kind-nam {
+  background: #4a3418;
+  color: #e0a24a;
+  border: 1px solid #7a5a2a;
+}
+
+.card-kind.kind-ir {
+  background: #1f3a52;
+  color: #85b8e0;
+  border: 1px solid #3c648a;
+}
+
+.card-kind.kind-worklet {
+  background: #38264f;
+  color: #c084fc;
+  border: 1px solid #5c4180;
+}
+
+.card-kind.kind-par {
+  background: #4a3418;
+  color: #f0c078;
+  border: 1px solid #7a5a2a;
+}
+
+.card-name {
+  font-weight: 700;
+  font-size: 12px;
+  color: #e2e6ea;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 220px;
+}
+
+.card-hint {
+  font-size: 10px;
+  color: #7d8690;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-move {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.led {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #4a4a4f, #26262a);
+  border: 1px solid #141416;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.led.on {
+  background: radial-gradient(circle at 35% 35%, #ff9a7a, #e03c1e 60%, #8f1f0e);
+  box-shadow: 0 0 8px rgba(255, 90, 40, 0.8);
+}
+
+.card-knobs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  justify-content: flex-start;
+}
+
+.knob {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  cursor: ns-resize;
+  user-select: none;
+  width: 62px;
+  touch-action: none;
+}
+
+.knob svg {
+  overflow: visible;
+}
+
+.knob-track {
+  fill: none;
+  stroke: #3a3a40;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.knob-arc {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.knob-cap {
+  fill: #2b2b31;
+  stroke: #4a4a52;
+  stroke-width: 1;
+}
+
+.knob-pointer {
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.knob-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #9aa4ae;
+  text-transform: uppercase;
+}
+
+.knob-value {
+  font-size: 10px;
+  color: #68e86a;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.knob:hover .knob-cap {
+  stroke: #6a6a75;
+}
+
+/* CAB button — cabinet (IR) attached to a specific NAM */
+.chain-card .cab-btn {
+  flex: 0 0 auto;
+  height: 18px;
+  font-weight: 700;
+  color: #e0a24a;
+  background: #2a2115;
+  border-color: #7a5a2a;
+}
+
+.chain-card .cab-btn:hover {
+  background: #3a2d1b;
+  color: #ffce7a;
+}
+
+.chain-card .cab-btn.attached {
+  background: linear-gradient(to bottom, #5a4222, #3a2a14);
+  color: #ffd27f;
+  border-color: #b8862f;
+  box-shadow: 0 0 5px rgba(224, 162, 74, 0.45);
+}
+
+/* ============ INSTRUMENT TRACKS / PIANO ROLL / STEP SEQUENCER ============ */
+
+.instrument-btn {
+  color: #ffd27f;
+}
+
+.midi-item {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  background: linear-gradient(180deg, rgba(122, 162, 255, 0.3), rgba(70, 100, 190, 0.18));
+  border-style: dashed;
+}
+
+.midi-item-label {
+  font-size: 10px;
+  color: #d7e2ff;
+  text-shadow: 0 1px 0 #000;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.midi-window {
+  width: min(1060px, 96vw);
+}
+
+.midi-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* At narrow widths the tool row drops below the title instead of crushing it
+   into a four-line column. Every window header shares this shape. */
+.fx-window .fx-header {
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.fx-window .fx-header > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.midi-window .midi-tools {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 6px;
+}
+
+.midi-tools label {
+  font-size: 10px;
+  color: #9aa4ae;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.midi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.roll-scroll {
+  overflow: auto;
+  max-height: 58vh;
+  border: 1px solid #141414;
+  border-radius: 4px;
+  background: #161616;
+}
+
+.roll-layout {
+  display: grid;
+  grid-template-columns: 64px auto;
+  grid-template-rows: 18px auto;
+  width: max-content;
+}
+
+.roll-corner {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  background: #232323;
+  border-right: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+
+.roll-ruler {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  grid-column: 2;
+  background: #2a2a2a;
+  border-bottom: 1px solid #111;
+}
+
+.roll-bar-label {
+  position: absolute;
+  top: 2px;
+  width: 256px;
+  padding-left: 3px;
+  font: 700 9px ui-monospace, Consolas, monospace;
+  color: #8d98a3;
+}
+
+.roll-keys {
+  grid-column: 1;
+  grid-row: 3;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: #1c1c1c;
+  border-right: 1px solid #111;
+  overflow: hidden;
+}
+
+.roll-key {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 5px;
+  box-sizing: border-box;
+  font-size: 8px;
+  color: #8fa2b8;
+  background: #2d2d31;
+  border-bottom: 1px solid #181818;
+}
+
+.roll-key.black {
+  background: #1d1d20;
+  color: #67707b;
+}
+
+.roll-key.held {
+  background: #3d6a45;
+  color: #eafff0;
+}
+
+.roll-key-cap {
+  margin-right: auto;
+  padding-left: 5px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #7fa8d8;
+}
+
+/* Playing an instrument with the computer keyboard. */
+.pc-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  margin-bottom: 6px;
+  background: #1b1b1e;
+  border: 1px solid #2f2f34;
+  border-radius: 3px;
+}
+
+.pc-strip.on {
+  border-color: #3f6a4a;
+  background: #17211a;
+}
+
+.pc-toggle {
+  flex: 0 0 auto;
+  font-size: 10px;
+}
+
+.pc-toggle.on {
+  color: #a8e6b8;
+  border-color: #4c8a5c;
+}
+
+.pc-octave {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: 0 0 auto;
+}
+
+.pc-octave button {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+  color: #c8c8c8;
+  background: #2a2a2e;
+  border: 1px solid #3d3d44;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.pc-octave button:hover {
+  color: #fff;
+  background: #3a3a41;
+}
+
+.pc-octave span {
+  min-width: 34px;
+  font-size: 10px;
+  color: #9fb4cc;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pc-keys {
+  display: flex;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pc-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  flex: 1 1 0;
+  min-width: 16px;
+  max-width: 34px;
+  height: 30px;
+  padding: 0;
+  cursor: pointer;
+  border: 1px solid #3a3a40;
+  border-radius: 2px;
+  background: #e8eaf0;
+  color: #23262c;
+}
+
+.pc-key.black {
+  background: #26262b;
+  border-color: #44444c;
+  color: #d7dae2;
+}
+
+.pc-key b {
+  font-size: 10px;
+  line-height: 1;
+}
+
+.pc-key i {
+  font-size: 7px;
+  font-style: normal;
+  line-height: 1;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.pc-key:hover {
+  border-color: #79a8d6;
+}
+
+.pc-key.held {
+  background: #6fcf97;
+  border-color: #a8e6b8;
+  color: #122018;
+}
+
+.pc-hint {
+  flex: 1 1 100%;
+  font-size: 9px;
+  color: #7f8894;
+}
+
+.pc-strip.on .pc-hint {
+  color: #92b8a0;
+}
+
+.roll-lane-label {
+  display: block;
+  width: 100%;
+  padding: 0 5px;
+  box-sizing: border-box;
+  font-size: 9px;
+  text-align: right;
+  color: #c9d4e0;
+  background: #2b2b2e;
+  border: none;
+  border-bottom: 1px solid #181818;
+  cursor: pointer;
+}
+
+.roll-lane-label:hover {
+  background: #3a3a40;
+  color: #fff;
+}
+
+.roll-grid {
+  grid-column: 2;
+  grid-row: 3;
+  position: relative;
+  cursor: crosshair;
+  background-color: #232326;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* Velocity lane: the height of each bar is how hard that note hits. */
+.roll-vel-label {
+  grid-column: 1;
+  grid-row: 4;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1c1c1c;
+  border-right: 1px solid #111;
+  border-top: 1px solid #111;
+  color: #8b8b8b;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.roll-vel {
+  grid-column: 2;
+  grid-row: 4;
+  position: relative;
+  border-top: 1px solid #111;
+  background: linear-gradient(to bottom, #1b1b1d, #24242a);
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.roll-vel-bar {
+  position: absolute;
+  bottom: 2px;
+  background: #79a8d6;
+  border-radius: 1px;
+  opacity: 0.78;
+}
+
+.roll-vel-bar.selected {
+  background: #b9d3f2;
+}
+
+.roll-vel-bar.active {
+  background: #ffd86b;
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(255, 216, 107, 0.5);
+}
+
+/* Groove row above the roll: quantize grid, humanize and the scale picker. */
+.roll-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 8px;
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  background: #1d1d1f;
+  border: 1px solid #141414;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #9a9a9a;
+}
+
+.roll-tools select {
+  max-width: 140px;
+}
+
+.roll-tools .scale-mode {
+  max-width: 160px;
+}
+
+.roll-tools .reaper-btn {
+  padding: 3px 9px;
+  font-size: 10px;
+}
+
+.roll-tools-sep {
+  width: 1px;
+  align-self: stretch;
+  background: #343434;
+}
+
+.roll-tools-hint {
+  margin-left: auto;
+  color: #6f6f6f;
+  font-size: 9.5px;
+  text-align: right;
+}
+
+.roll-playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1.5px solid rgba(255, 205, 92, 0.9);
+  box-shadow: 0 0 6px rgba(255, 205, 92, 0.45);
+  pointer-events: none;
+  z-index: 6;
+}
+
+.editor-transport {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 8px;
+  margin-right: 4px;
+  border-right: 1px solid #3a3a3a;
+}
+
+.editor-transport .reaper-btn {
+  min-width: 30px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.reaper-btn.editor-play.on {
+  background: #2f5d3a;
+  border-color: #57a06a;
+  color: #d8f3df;
+}
+
+.voice-select {
+  max-width: 150px;
+}
+
+.roll-grid.piano {
+  background-size: 256px 100%, 64px 100%, 100% 13px;
+}
+
+.roll-grid.drums {
+  background-size: 256px 100%, 64px 100%, 100% 30px;
+}
+
+.roll-rowline {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.roll-rowline.dark {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Rows that belong to the scale picked in the tools row, so wrong notes stand out. */
+.roll-rowline.in-scale {
+  background: rgba(121, 168, 214, 0.14);
+}
+
+.roll-rowline.dark.in-scale {
+  background: linear-gradient(rgba(121, 168, 214, 0.16), rgba(121, 168, 214, 0.16)),
+    rgba(0, 0, 0, 0.32);
+}
+
+.roll-note {
+  position: absolute;
+  background: linear-gradient(180deg, #9fc2ff, #5b83d8);
+  border: 1px solid #d7e4ff;
+  border-radius: 2px;
+  cursor: grab;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+}
+
+.roll-note:active {
+  cursor: grabbing;
+}
+
+.roll-grid.drums .roll-note {
+  background: linear-gradient(180deg, #ffd27f, #d8923a);
+  border-color: #ffe9c2;
+}
+
+/* ------------------------------------------------------ step sequencer board */
+
+.seq-scroll {
+  overflow: auto;
+  max-height: 62vh;
+  border: 1px solid #141414;
+  border-radius: 4px;
+  background: #161616;
+}
+
+.seq-layout {
+  display: grid;
+  grid-template-rows: 20px auto;
+  width: max-content;
+}
+
+.seq-corner {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #232323;
+  border-right: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+
+.seq-corner-label {
+  font: 700 9px ui-monospace, Consolas, monospace;
+  color: #ffb54a;
+  white-space: nowrap;
+}
+
+.seq-ruler {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  height: 20px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #111;
+}
+
+.seq-step-label {
+  position: absolute;
+  top: 4px;
+  text-align: center;
+  font: 700 8px ui-monospace, Consolas, monospace;
+  color: #6d7680;
+  pointer-events: none;
+}
+
+.seq-step-label.beat {
+  color: #c6d2e0;
+}
+
+.seq-keys {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: #1c1c1c;
+  border-right: 1px solid #111;
+  overflow: hidden;
+}
+
+.seq-lane {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 6px;
+  box-sizing: border-box;
+  font-size: 9px;
+  color: #c9d4e0;
+  background: #2b2b2e;
+  border: none;
+  border-bottom: 1px solid #181818;
+  cursor: pointer;
+}
+
+.seq-lane:hover {
+  background: #3a3a40;
+  color: #fff;
+}
+
+.seq-lane.on {
+  background: linear-gradient(90deg, #3b3323, #2b2b2e);
+  color: #ffe4b0;
+}
+
+.seq-lane-count {
+  font: 700 8px ui-monospace, Consolas, monospace;
+  color: #7f8b98;
+}
+
+/* The computer key that hits this lane, and the flash when it fires. */
+.seq-lane-key {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+  border: 1px solid #3d3d42;
+  border-radius: 2px;
+  background: #17171a;
+  font: 700 8px ui-monospace, Consolas, monospace;
+  line-height: 12px;
+  text-align: center;
+  color: #7fa8d8;
+}
+
+.seq-lane.held {
+  background: linear-gradient(90deg, #4a3f22, #2b2b2e);
+  color: #fff3d0;
+}
+
+.seq-lane.held .seq-lane-key {
+  border-color: #d8b25a;
+  color: #ffe4a0;
+  background: #3a3018;
+}
+
+.seq-grid {
+  position: relative;
+  cursor: crosshair;
+  background-color: #232326;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  touch-action: none;
+}
+
+/* One bar per step: the force of every hit in that column. */
+.seq-vel-label {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1c1c1c;
+  border-right: 1px solid #111;
+  border-top: 1px solid #111;
+  color: #8b8b8b;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.seq-vel {
+  position: relative;
+  border-top: 1px solid #111;
+  background-color: #1f1f22;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.seq-vel-bar {
+  position: absolute;
+  bottom: 2px;
+  background: #3a3a42;
+  border-radius: 1px;
+}
+
+.seq-vel-bar.on {
+  background: #79a8d6;
+  opacity: 0.8;
+}
+
+.seq-vel-bar.active {
+  background: #ffd86b;
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(255, 216, 107, 0.5);
+}
+
+.seq-column {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 205, 92, 0.1);
+  border-left: 1px solid rgba(255, 205, 92, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.seq-playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1.5px solid rgba(255, 205, 92, 0.9);
+  box-shadow: 0 0 6px rgba(255, 205, 92, 0.45);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.seq-hit {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 1px 3px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.seq-hit.accent {
+  border-color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.pattern-select {
+  max-width: 130px;
+}
+
+.groove-select {
+  max-width: 130px;
+}
+
+/* A looping pattern in the arrangement: one item across the song with a line
+   at the start of every repeat, so the loop is visible without counting bars. */
+.pattern-item {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  cursor: pointer;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0, rgba(255, 255, 255, 0.18) 1px,
+      transparent 1px),
+    linear-gradient(180deg, rgba(122, 162, 255, 0.3), rgba(70, 100, 190, 0.16));
+}
+
+.midi-edit-btn {
+  flex: 1;
+  height: 22px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #cfe0ff;
+  background: linear-gradient(to bottom, #3a4a6b, #26314a);
+  border: 1px solid #111;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.midi-edit-btn:hover {
+  background: linear-gradient(to bottom, #4a5d85, #2f3d5c);
+  color: #fff;
+}
+
+/* ============ WEB MIDI STATUS / DEVICE PANEL ============ */
+
+.midi-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: #767d85;
+  letter-spacing: 0.3px;
+}
+
+.midi-status.linked {
+  color: #9fd6ff;
+}
+
+.midi-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2c2f33;
+  border: 1px solid #111;
+  box-shadow: inset 0 0 2px #000;
+}
+
+.midi-led.on {
+  background: #55ff88;
+  box-shadow: 0 0 6px rgba(85, 255, 136, 0.8);
+}
+
+.midi-device {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  text-align: left;
+  background: linear-gradient(to bottom, #2e2e2e, #232323);
+  border: 1px solid #111;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.midi-device:hover {
+  background: linear-gradient(to bottom, #3a3a3a, #2a2a2a);
+}
+
+.midi-device.active {
+  border-color: #4a7fb5;
+  box-shadow: 0 0 6px rgba(90, 150, 210, 0.35);
+}
+
+.midi-dev-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8e8e8;
+}
+
+.midi-dev-meta {
+  font-size: 10px;
+  color: #8a949e;
+}
+
+.plugin-note.error {
+  color: #ff9a8a;
+  border-color: #7a3a2e;
+}
+
+/* ============================ MIXING CONSOLE ============================ */
+
+.mixer-dock {
+  height: 232px;
+  flex: 0 0 232px;
+}
+
+.mcp-channel {
+  width: 148px;
+  gap: 2px;
+}
+
+.knob-compact {
+  width: 42px;
+}
+
+.knob-compact .knob-label {
+  font-size: 8px;
+}
+
+.knob-compact .knob-value {
+  font-size: 8.5px;
+}
+
+.mcp-stage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
+}
+
+.mcp-stage-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 8px;
+}
+
+.tcp-btn.btn-stage {
+  width: 21px;
+  height: 17px;
+  padding: 0;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.tcp-btn.btn-stage.on {
+  background: #33506f;
+  border-color: #79a8d6;
+  color: #e7f0f8;
+}
+
+.mcp-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.mcp-preset {
+  flex: 1;
+  min-width: 0;
+  height: 18px;
+  padding: 0 2px;
+  background: #232323;
+  border: 1px solid #3d3d3d;
+  border-radius: 2px;
+  color: #c8c8c8;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.mcp-preset:hover {
+  background: #2e2e2e;
+  color: #fff;
+}
+
+.mcp-db {
+  flex: 0 0 auto;
+  min-width: 40px;
+  text-align: right;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 9px;
+  color: #68e86a;
+}
+
+.mcp-db.master-db {
+  padding-top: 14px;
+  min-width: 44px;
+  color: #9ec7f0;
+}
+
+/* Master peak + loudness, as a console readout block: a label column and a
+   number column. One line per number, right-aligned, so nothing has to be
+   squeezed next to a knob and the strip's overflow:hidden never eats a digit. */
+.master-readouts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 0 0 auto;
+  padding-top: 2px;
+}
+
+.master-readouts .ro {
+  display: grid;
+  grid-template-columns: 20px auto;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.master-readouts .ro em {
+  color: #6f6f6f;
+  font-size: 8px;
+  font-style: normal;
+  letter-spacing: 0.4px;
+}
+
+.master-readouts .ro b {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 9px;
+  font-weight: 400;
+  text-align: right;
+  color: #9ec7f0;
+}
+
+.master-readouts .master-db b {
+  color: #68e86a;
+}
+
+.master-readouts .ro.hot b {
+  color: #e08a7a;
+}
+
+.master-readouts .ro.gr b {
+  color: #777;
+}
+
+.master-readouts .ro.gr.on b {
+  color: #d6b16a;
+}
+
+/* The master carries five readouts plus two return knobs, so it is wider than a
+   channel: a console's master section is never the narrowest strip on the desk. */
+.mcp-channel.master {
+  width: 168px;
+}
+
+/* Delay compensation belongs to the room, not to one strip: it rides the right
+   end of the console rail. */
+.dock-header .latency-row {
+  margin-left: auto;
+}
+
+/* ------------------------- MASTER BUS WINDOW ------------------------- */
+
+.master-fx-window {
+  width: 940px;
+  max-width: 94vw;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.master-fx-note {
+  padding: 7px 14px 0;
+  font-size: 10.5px;
+  color: #93a0ac;
+}
+
+.master-fx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 8px;
+  padding: 10px 14px;
+}
+
+.mfx-card {
+  background: #232327;
+  border: 1px solid #3a3a40;
+  border-radius: 4px;
+  padding: 7px 9px;
+}
+
+.mfx-card.bypassed {
+  opacity: 0.48;
+}
+
+.mfx-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.mfx-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #e2e8ef;
+  letter-spacing: 0.4px;
+}
+
+.mfx-hint {
+  font-size: 9.5px;
+  color: #86909a;
+}
+
+.send-bus-section {
+  margin: 2px 14px 12px;
+  padding: 9px 12px;
+  background: #1e1e22;
+  border: 1px solid #3a3a40;
+  border-radius: 4px;
+}
+
+.send-bus-title {
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  color: #8ab4f8;
+  margin-bottom: 6px;
+}
+
+.send-bus-note {
+  margin-top: 6px;
+  font-size: 9.5px;
+  color: #86909a;
+}
+
+/* --------------------------- CLIP TRIM HANDLE --------------------------- */
+
+.clip-trim {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.18));
+  border-right: 2px solid rgba(220, 235, 250, 0.55);
+  touch-action: none;
+}
+
+.clip-trim:hover {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(150, 200, 255, 0.35));
+  border-right-color: #9ec7f0;
+}
+
+/* ------------------------- TIMELINE CONTEXT MENU ------------------------- */
+
+.clip-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+}
+
+.clip-menu {
+  position: absolute;
+  min-width: 226px;
+  padding: 4px 0;
+  background: #2b2b2b;
+  border: 1px solid #111;
+  border-radius: 3px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.85);
+}
+
+.clip-menu-title {
+  padding: 4px 12px 6px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #3a3a3a;
+  font-size: 9.5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #79a8d6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clip-menu button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  color: #ccc;
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.clip-menu button span {
+  font-size: 9px;
+  color: #7a7a7a;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.clip-menu button:hover:not(:disabled) {
+  background: #444;
+  color: #fff;
+}
+
+.clip-menu button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.clip-menu button.danger {
+  color: #e07b53;
+}
+
+.clip-menu-sep {
+  height: 1px;
+  margin: 4px 0;
+  background: #3a3a3a;
+}
+
+.clip-menu-heading {
+  padding: 2px 10px;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7f8894;
+}
+
+.clip-menu button.current {
+  color: #a8e6b8;
+  background: #23382a;
+}
+
+/* ------------------- TRANSPORT BAR @ NARROW WIDTHS ------------------- */
+
+.transport-bar {
+  gap: 12px;
+  overflow: hidden;
+}
+
+.transport-buttons,
+.transport-display,
+.display-bpm,
+.display-bars {
+  flex-shrink: 0;
+}
+
+/* The right-hand extras scroll instead of being clipped off-screen. */
+.transport-options {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.transport-options::-webkit-scrollbar {
+  display: none;
+}
+
+/* Below ~1180px the transport bar keeps one row: the BAR/16th readout is
+   dropped (the discreet clock sub-line already shows bar . beat . 16th) and the
+   bar only wraps to a second row as a last resort at very narrow widths. */
+@media (max-width: 1180px) {
+  .transport-bar {
+    height: auto;
+    min-height: 48px;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 4px;
+    padding: 4px 12px;
+  }
+
+  .display-step {
+    display: none;
+  }
+
+  .transport-options {
+    overflow: visible;
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+}
+
+@media (max-width: 760px) {
+  .transport-display {
+    gap: 8px;
+  }
+}
+
+/* ------------------- DISCREET QUICK ACTIONS ------------------- */
+/* The old row of labelled buttons took ~700px of the transport bar. The same
+   actions now live in a compact icon cluster; every one of them is also in the
+   menu bar, so nothing is only reachable here. */
+.quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 3px;
+  border: 1px solid #2a2a2a;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.22);
+  flex: 0 0 auto;
+}
+
+.qa-btn {
+  width: 26px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+  color: #8f9aa6;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.qa-btn:hover:not(:disabled) {
+  color: #e8eef4;
+  background: #3a3f45;
+}
+
+.qa-btn:disabled {
+  color: #4a4f55;
+  cursor: default;
+}
+
+.qa-btn.key-toggle.on {
+  color: #a8e6b8;
+  background: #23382a;
+  border-color: #4c8a5c;
+}
+
+.qa-btn.active {
+  color: #cfe6ff;
+  background: #24384c;
+  border-color: #3f6c96;
+}
+
+.qa-btn.danger:hover:not(:disabled) {
+  color: #ffb4b4;
+  background: #4a2b2b;
+}
+
+.qa-sep {
+  width: 1px;
+  height: 14px;
+  margin: 0 2px;
+  background: #3a3a3a;
+  flex: 0 0 auto;
+}
+
+/* ---------------- ZOOMABLE TIMELINE (one scroll container) ---------------- */
+/* The whole arrangement lives inside .timeline-content, whose width is a
+   percentage above 100 when zoomed in. Every clip is still positioned in %, so
+   all the existing left/width math keeps working and the drag code that reads
+   lane.clientWidth keeps working too. The ruler sticks to the top so it scrolls
+   sideways with the lanes but never scrolls out of view. */
+.timeline-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  position: relative;
+  background: #1c1c1c;
+  scrollbar-width: thin;
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: relative;
+}
+
+.timeline-content > .ruler-bar {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.timeline-content > .tab-content {
+  overflow: visible;
+  flex: 1 1 auto;
+}
+
+/* Zoom / snap controls live at the right end of the tab row, so the timeline
+   gains no extra height. */
+.view-tools {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 8px;
+  background: #181818;
+  border-bottom: 1px solid #111;
+}
+
+.view-tools .zoom-readout {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 9.5px;
+  color: #6f8aa3;
+  min-width: 62px;
+  text-align: center;
+}
+
+/* --------------------------- CLIP EDGE FADES --------------------------- */
+.clip-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  min-width: 6px;
+  cursor: ew-resize;
+  touch-action: none;
+  opacity: 0.75;
+}
+
+.clip-fade:hover {
+  opacity: 1;
+}
+
+.clip-fade-in {
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+  border-left: 2px solid rgba(150, 200, 255, 0.45);
+}
+
+.clip-fade-out {
+  /* Parked 7px inside the right edge so the 8px trim strip stays grabbable. */
+  right: 7px;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+  border-right: 2px solid rgba(150, 200, 255, 0.45);
+}
+
+/* ----------------------------- LATENCY COMP ----------------------------- */
+.latency-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  color: #86909a;
+}
+
+.latency-row input[type="number"] {
+  width: 46px;
+  background: #1b1b1b;
+  color: #cfe0f0;
+  border: 1px solid #383838;
+  border-radius: 2px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 10px;
+  padding: 2px 4px;
+}
+
+.latency-row .latency-auto {
+  color: #5f7285;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Disabled menu entries (undo/redo with an empty stack) must not light up on
+   hover, or they read as clickable. */
+.dropdown button:disabled,
+.dropdown button:disabled:hover {
+  color: #585858;
+  background: transparent;
+  cursor: default;
+}
+
+/* Undo/redo joined the icon cluster, so at narrow widths the buttons lose a few
+   pixels each to keep the transport bar on one row instead of wrapping to two. */
+@media (max-width: 1180px) {
+  .quick-actions {
+    gap: 1px;
+    flex-wrap: wrap;
+  }
+
+  .quick-actions .qa-btn {
+    width: 21px;
+  }
+
+  .quick-actions .qa-sep {
+    margin: 0 1px;
+  }
+}
+
+/* ---------- live take (recording waveform) ---------- */
+
+.live-take {
+  position: absolute;
+  top: 22px;
+  height: calc(100% - 26px);
+  border: 1px solid;
+  border-radius: 3px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.live-take .waveform {
+  opacity: 0.9;
+}
+
+.live-take::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 60, 60, 0.16), rgba(255, 60, 60, 0.04));
+  pointer-events: none;
+}
+
+.live-take-label {
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #ff8a8a;
+  text-shadow: 0 1px 2px #000;
+  z-index: 2;
+}
+
+/* Live spectrum of the take being written. Anchored inside the arrange panel so
+   it never covers the transport or the ruler, and it is small on purpose: the
+   lanes stay editable underneath it. */
+.record-hud {
+  position: absolute;
+  right: 12px;
+  bottom: 34px;
+  z-index: 20;
+  width: min(360px, calc(100% - 24px));
+  padding: 6px 8px 7px;
+  background: rgba(18, 18, 18, 0.94);
+  border: 1px solid #3a3a3a;
+  border-left: 3px solid #d24545;
+  border-radius: 4px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.record-hud-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 9px ui-monospace, Consolas, monospace;
+  letter-spacing: 0.06em;
+  color: #ff9a9a;
+}
+
+.record-hud-hint {
+  margin-left: auto;
+  font-weight: 400;
+  font-size: 8px;
+  letter-spacing: 0;
+  color: #6d7680;
+}
+
+.rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e04b4b;
+  animation: rec-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes rec-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.record-hud-canvas {
+  display: block;
+  width: 100%;
+  height: 78px;
+  margin-top: 5px;
+}
+
+/* Time range picked with Shift+drag on the ruler. It is a read-only overlay:
+   pointer-events stay off so clips underneath keep dragging normally, and the
+   actions are reached with a right-click on the ruler inside the band. */
+.time-selection {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: rgba(121, 168, 214, 0.13);
+  border-left: 1px solid rgba(150, 200, 245, 0.85);
+  border-right: 1px solid rgba(150, 200, 245, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(121, 168, 214, 0.12);
+}
+
+.time-selection-tag {
+  position: absolute;
+  /* The band starts under the sticky ruler, so a tag at the very top of it is
+     hidden behind the ruler itself. */
+  top: 22px;
+  left: 3px;
+  padding: 0 4px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #dceaf7;
+  background: rgba(28, 42, 56, 0.82);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* With punch-in the same band becomes the region the recorder opens inside,
+   so it takes the arrangement's armed orange instead of the selection blue. */
+.time-selection.punch {
+  background: rgba(255, 138, 61, 0.14);
+  border-left-color: rgba(255, 176, 96, 0.9);
+  border-right-color: rgba(255, 176, 96, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(255, 138, 61, 0.18);
+}
+
+.time-selection.punch .time-selection-tag {
+  color: #ffd9ae;
+  background: rgba(74, 38, 14, 0.85);
+}
+
+/* The pass is armed and the transport is rolling: the recorder opens the
+   moment the playhead crosses the left edge, so make the wait visible. */
+.time-selection.punch.armed {
+  animation: punch-armed 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes punch-armed {
+  from {
+    background: rgba(255, 138, 61, 0.13);
+  }
+  to {
+    background: rgba(255, 138, 61, 0.32);
+  }
+}
+
+/* Box picked with Shift+drag inside the piano roll. Pure overlay: the grid
+   keeps the pointer so painting, dragging and clicking still behave. */
+.roll-marquee {
+  position: absolute;
+  pointer-events: none;
+  z-index: 4;
+  background: rgba(121, 168, 214, 0.16);
+  border: 1px solid rgba(150, 200, 245, 0.8);
+}
+
+.roll-note.selected {
+  outline: 1px solid #cfe6ff;
+  outline-offset: -1px;
+  box-shadow: 0 0 0 1px rgba(121, 168, 214, 0.55), 0 0 8px rgba(121, 168, 214, 0.45);
+}
+
+.roll-sel-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding-left: 6px;
+  margin-left: 6px;
+  border-left: 1px solid #333;
+}
+
+.roll-sel-count {
+  font-size: 9px;
+  color: #9fb4c9;
+  white-space: nowrap;
+}
+
+.reaper-btn.mini {
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 1.3;
+  min-width: 22px;
+}
+
+.reaper-btn.mini:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ----------------- NATIVE PLUGIN PANEL (desktop executable) -----------------
+   The browser has no plugins to show, so this whole block only appears when the
+   app runs as OpenDAW.exe. It keeps the FX-window look but is wider, because a
+   real VST list has file names and parameter rows that must not be clipped. */
+.fx-window.plugin-window {
+  width: 880px;
+  max-width: 94vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.plugin-window .plugin-toolbar {
+  display: flex;
+  align-items: center;
+  /* Two buttons and a counter: at a narrow window the counter goes to its own
+     line rather than pushing anything out of the panel. */
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.plugin-window .plugin-count {
+  font-size: 10px;
+  color: #9fb4c9;
+  font-family: ui-monospace, Consolas, monospace;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The folders a scan walked: a detail, so it opens on demand and never takes
+   the space the list of plugins needs. */
+.plugin-window .plugin-dirs {
+  font-size: 10px;
+  color: #8a8a8a;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.plugin-window .plugin-dirs summary {
+  cursor: pointer;
+  color: #9fb4c9;
+  padding: 2px 0;
+}
+
+.plugin-window .plugin-dirs ul {
+  margin: 4px 0 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.plugin-window .plugin-dirs li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  overflow-wrap: anywhere;
+}
+
+.plugin-window .plugin-dirs li.hit {
+  color: #cfe3d6;
+}
+
+.plugin-window .plugin-dir-path {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.plugin-window .plugin-dir-count {
+  flex: 0 0 auto;
+  color: #d6b16a;
+}
+
+.plugin-window .plugin-columns {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.plugin-window .plugin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 46vh;
+  overflow-y: auto;
+  padding-right: 4px;
+  background: #232323;
+  border: 1px solid #383838;
+  border-radius: 3px;
+}
+
+.plugin-window .plugin-row {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 7px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #d6d6d6;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.plugin-window .plugin-row:hover {
+  background: #2f2f2f;
+}
+
+.plugin-window .plugin-row.on {
+  background: #2a3b4d;
+  border-color: #4a7aa8;
+}
+
+.plugin-window .plugin-row.dead {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.plugin-window .plugin-row.dead:hover {
+  background: transparent;
+}
+
+.plugin-window .plugin-kind {
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #7dd3fc;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.plugin-window .plugin-name {
+  flex: none;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  font-size: 11px;
+}
+
+.plugin-window .plugin-desc {
+  font-size: 9px;
+  color: #8a8a8a;
+  font-family: ui-monospace, Consolas, monospace;
+  white-space: nowrap;
+}
+
+.plugin-window .plugin-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 46vh;
+  overflow-y: auto;
+  font-size: 11px;
+  color: #cfcfcf;
+  font-family: inherit;
+}
+
+.plugin-window .plugin-detail h4 {
+  margin: 0;
+  color: #79a8d6;
+  font-size: 13px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.plugin-window .plugin-detail h4 em {
+  font-style: normal;
+  font-size: 10px;
+  color: #8a8a8a;
+}
+
+.plugin-window .plugin-specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 12px;
+  margin: 0;
+}
+
+.plugin-window .plugin-specs > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 2px;
+}
+
+.plugin-window .plugin-specs dt {
+  font-size: 10px;
+  color: #8a8a8a;
+}
+
+.plugin-window .plugin-specs dd {
+  margin: 0;
+  font-size: 10px;
+  color: #d6b16a;
+  font-family: ui-monospace, Consolas, monospace;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.plugin-window .plugin-params {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.plugin-window .param-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  background: #262626;
+}
+
+.plugin-window .param-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+  color: #cfcfcf;
+}
+
+.plugin-window .param-value {
+  flex: 0 0 auto;
+  font-size: 10px;
+  color: #7dd3a0;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.plugin-window .plugin-classes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plugin-window .plugin-classes li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 10px;
+  background: #262626;
+  padding: 3px 6px;
+  border-radius: 2px;
+}
+
+.plugin-window .plugin-classes strong {
+  color: #e0e0e0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plugin-window .plugin-classes em {
+  font-style: normal;
+  color: #8a8a8a;
+  font-family: ui-monospace, Consolas, monospace;
+  flex: 0 0 auto;
+}
+
+/* ---------------- NATIVE VST2 INSERT (inside a track's FX chain) ----------------
+   Only the executable shows this block. It is framed so it reads as a different
+   kind of stage: the other cards run live, this one works on the clip. */
+.native-vst {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #3d4b5a;
+  border-left: 3px solid #4a7aa8;
+  border-radius: 3px;
+  background: #232830;
+  padding: 10px 12px;
+}
+
+.native-vst .fx-param label {
+  min-width: 120px;
+  font-size: 10px;
+  color: #9fb4c9;
+}
+
+.native-vst select.reaper-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.native-vst-params {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.native-vst-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* The one honest line about the pass the engine is actually playing: which state
+   the preview is in and the peak it measured. One row, it wraps instead of
+   clipping, and the retry only appears when the plugin really refused. */
+.native-vst-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 8px;
+  border: 1px solid #3d4b5a;
+  border-radius: 3px;
+  background: #1c2128;
+  font-size: 10.5px;
+  color: #9fb4c9;
+}
+
+.native-vst-preview .preview-state {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.native-vst-preview .mini-btn {
+  flex: 0 0 auto;
+  height: 17px;
+}
+
+.native-vst-preview.on {
+  border-color: #2f6b52;
+  color: #7fd1a4;
+}
+
+.native-vst-preview.busy {
+  border-color: #6a5b2c;
+  color: #d9c07a;
+}
+
+.native-vst-preview.error {
+  border-color: #7a3b3b;
+  color: #e29090;
+}
+
+/* The live line: one row about the session in the plugin process — the round
+   trip it costs, the blocks it missed, or the plugin's own refusal. It wraps
+   rather than clipping, because the reason is the point of the row. */
+.native-vst-live {
+  padding: 4px 8px;
+  border: 1px dashed #33404e;
+  border-radius: 3px;
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: #8494a6;
+  overflow-wrap: anywhere;
+}
+
+.native-vst-live.on {
+  border-style: solid;
+  border-color: #2f6b52;
+  color: #7fd1a4;
+}
+
+.native-vst-live.off {
+  border-style: solid;
+  border-color: #7a3b3b;
+  color: #e29090;
+}
+
+/* One row for discovery, under the list it fills. The buttons keep their own
+   width so the note next to them wraps instead of being pushed out of the
+   panel, and a long path or count never gets clipped. */
+.native-vst-scan {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.native-vst-scan .mini-btn {
+  flex: 0 0 auto;
+  height: 17px;
+}
+
+.native-vst-scan-hint {
+  min-width: 0;
+  font-size: 10px;
+  color: #7d8b99;
+  overflow-wrap: anywhere;
+}
+
+/* Where the plugin's own window lands. Closed it is a slim strip with the
+   button; open it grows into the box the native window sits on, so the page and
+   the plugin's GUI do not fight over the same pixels. */
+.native-vst-stage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 30px;
+  padding: 6px 8px;
+  border: 1px dashed #3d4b5a;
+  border-radius: 3px;
+  background: #1c2128;
+  font-size: 11px;
+  color: #9fb4c9;
+}
+
+.native-vst-stage.open {
+  min-height: 300px;
+  align-items: flex-start;
+}
+
+.native-vst-stage .plugin-live {
+  color: #7fd1a4;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* While the interface is up in the pane, the chain keeps its own reminder —
+   the slot must never look like it went blank. */
+.native-vst-open-here {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid #3d4b5a;
+  border-radius: 3px;
+  background: #1c2128;
+  font-size: 11px;
+  color: #9fb4c9;
+}
+
+/* ---------------- REAPER-STYLE SPLIT (executable only) ----------------
+   A plugin's interface is not a card in a chain. REAPER keeps the chain in a
+   narrow column and hands the plugin the rest of the FX window, because an amp
+   face drawn at 300px is unreadable. The pane is a child of the FX window (the
+   insert renders it there), so the split is the window's own layout and the
+   native window only follows the rectangle the page reports. */
+.fx-window:has(> .native-vst-stage) {
+  width: min(1600px, 98vw);
+  max-width: 98vw;
+  height: min(880px, 94vh);
+  display: grid;
+  /* A fixed, slim chain leaves a full-size amp face the rest of the screen.
+     The second track can shrink instead of pushing the window off-screen. */
+  grid-template-columns: minmax(270px, 300px) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.fx-window:has(> .native-vst-stage) .fx-header,
+.fx-window:has(> .native-vst-stage) .fx-footer {
+  grid-column: 1 / -1;
+}
+
+.fx-window:has(> .native-vst-stage) .fx-body-scroll {
+  grid-column: 1;
+  grid-row: 2;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  border-right: 1px solid #3d4b5a;
+}
+
+.native-vst-stage.pane {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* The bar and the canvas are stacked, so the cross axis is the width: without
+     stretch an empty canvas shrinks to nothing and the plugin would be placed on
+     a zero-width area. */
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: #1b1f25;
+}
+
+/* The plugin paints on the canvas, never over the bar that names it. */
+.native-vst-stage-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 8px;
+  background: #181818;
+  border-bottom: 1px solid #3d4b5a;
+  color: #9fb4c9;
+  font-size: 11px;
+}
+
+.native-vst-stage-bar .mini-btn {
+  margin-left: auto;
+}
+
+.native-vst-stage-name {
+  color: #cfe3f5;
+}
+
+.native-vst-stage-size,
+.native-vst-stage-hint {
+  font-family: ui-monospace, Consolas, monospace;
+  color: #7d8b99;
+  overflow-wrap: anywhere;
+}
+
+.native-vst-stage-canvas {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Without the split — the fallback for a window that is not an FX window — the
+   canvas is still the box the native window sits on, so it keeps a height and
+   the stacked layout; the closed strip stays the single row it has always been. */
+.native-vst-stage:not(.pane):has(.native-vst-stage-canvas) {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 300px;
+}
+
+.native-vst-stage:not(.pane) .native-vst-stage-canvas {
+  width: 100%;
+  min-height: 260px;
+}
+
+/* ---------------- THE FX WINDOW AS A WINDOW ----------------
+   A rack you cannot move is a rack you cannot work next to, and one you cannot
+   put away is a rack that owns the arrangement. The header is the handle — the
+   window itself shifts, the page behind it does not — and minimising leaves the
+   bar and hides everything else, including the plugin pane portalled into this
+   window, so the plugin's native window is put away with its pane instead of
+   hovering over a closed rack. */
+.fx-header-drag {
+  cursor: move;
+  user-select: none;
+  /* Without this the browser keeps a touch on the header for scrolling and the
+     window never moves. */
+  touch-action: none;
+}
+
+.fx-header-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+/* Written after (and heavier than) the split's own rules, so a minimised window
+   collapses to its bar whether or not a plugin is holding the right pane. */
+.fx-window.track-fx-window.minimized {
+  width: min(1120px, 96vw);
+  height: auto;
+}
+
+.fx-window.track-fx-window.minimized > *:not(.fx-header) {
+  display: none;
+}
+
+/* The window is the frame the grip is measured against; the overlay is not. */
+.track-fx-window {
+  position: relative;
+}
+
+.fx-resize-grip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  touch-action: none;
+  /* The three steps a producer reads as "the corner of a window". */
+  background: linear-gradient(
+    135deg,
+    transparent 0 45%,
+    #5a6a7a 45% 55%,
+    transparent 55% 65%,
+    #5a6a7a 65% 75%,
+    transparent 75% 85%,
+    #5a6a7a 85% 95%,
+    transparent 95%
+  );
+  opacity: 0.75;
+}
+
+.fx-resize-grip:hover {
+  opacity: 1;
+}
+
+/* Compact pedalboard cards. They share a row whenever there is room and wrap
+   as whole cards, so no knob or remove button is ever clipped off the window. */
+.signal-chain .chain-card {
+  flex: 1 1 216px;
+  width: auto;
+  max-width: 300px;
+  min-width: 0;
+  padding: 7px;
+  border-color: #405047;
+  border-radius: 9px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), transparent 38%),
+    linear-gradient(180deg, #2c3330 0%, #202623 48%, #191e1c 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 4px 10px rgba(0, 0, 0, 0.42);
+}
+
+.signal-chain .chain-card:hover {
+  border-color: #61786b;
+}
+
+.signal-chain .chain-card.bypassed {
+  opacity: 0.64;
+}
+
+.signal-chain .card-head {
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom-color: #39443e;
+}
+
+.signal-chain .card-idx {
+  min-width: 9px;
+  font-size: 9px;
+}
+
+.signal-chain .card-kind {
+  padding: 1px 4px;
+  font-size: 8px;
+}
+
+.signal-chain .card-name {
+  flex: 1 1 42px;
+  min-width: 32px;
+  max-width: none;
+  font-size: 11px;
+}
+
+.signal-chain .card-fx .card-hint {
+  display: none;
+}
+
+.signal-chain .card-move {
+  flex: 0 0 auto;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.signal-chain .card-move .mini-btn,
+.signal-chain .chain-remove {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+}
+
+.signal-chain .led {
+  width: 12px;
+  height: 12px;
+}
+
+.signal-chain .card-knobs {
+  gap: 5px 2px;
+  justify-content: space-around;
+}
+
+.signal-chain .knob {
+  width: 52px;
+}
+
+.signal-chain .knob-label {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 8px;
+}
+
+.signal-chain .knob-value {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 8px;
+}
+
+.signal-chain .plugin-detail {
+  overflow-wrap: anywhere;
+  font-size: 9px;
+}
+
+@media (max-width: 640px) {
+  .track-fx-window {
+    width: 98vw;
+    max-width: 98vw;
+  }
+
+  .track-fx-window .fx-body {
+    padding: 10px;
+  }
+
+  .signal-chain {
+    gap: 12px 18px;
+    padding: 10px;
+  }
+
+  .signal-chain > * + *::before {
+    left: -14px;
+  }
+
+  .signal-chain .chain-card {
+    flex-basis: 190px;
+  }
+
+  .chain-add {
+    flex-basis: 130px;
+    width: 130px;
+  }
+}
+
+/* ============================ DEVICE WINDOW ============================ */
+/* One panel for the whole signal path: what comes in, what goes out, and the
+   latency the machine is really giving — the screen a producer reads before
+   plugging a guitar in. */
+.devices-window {
+  width: min(760px, 94vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.devices-window .fx-body {
+  overflow-y: auto;
+  gap: 12px;
+}
+
+.dev-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #232323;
+  border: 1px solid #383838;
+  border-radius: 3px;
+  padding: 9px 11px;
+}
+
+.dev-title {
+  color: #b9b9b9;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dev-select {
+  width: 100%;
+  height: 24px;
+  background: #141414;
+  border: 1px solid #3a3a3a;
+  color: #d6d6d6;
+  font-size: 11px;
+  border-radius: 2px;
+  padding: 0 5px;
+}
+
+.dev-select:focus {
+  outline: 1px solid #79a8d6;
+}
+
+.dev-latency {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: center;
+  font-size: 10px;
+}
+
+.dev-ms {
+  color: #8d8d8d;
+  background: #1a1a1a;
+  border-radius: 2px;
+  padding: 1px 6px;
+}
+
+.dev-ok {
+  color: #7fd79a;
+  font-weight: bold;
+}
+
+.dev-idle {
+  color: #a8d0f0;
+}
+
+/* Three columns — device, what it delivers, who is patched to it — that collapse
+   into one line when the panel is narrow, instead of clipping the last column. */
+.dev-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr) minmax(0, 1.2fr);
+  gap: 8px;
+  align-items: baseline;
+  border-bottom: 1px solid #2e2e2e;
+  padding: 4px 0;
+  font-size: 10px;
+}
+
+.dev-row:last-of-type {
+  border-bottom: none;
+}
+
+.dev-name {
+  color: #d2d2d2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dev-meta {
+  color: #8d8d8d;
+}
+
+.dev-users {
+  color: #a8d0f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .dev-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .dev-name,
+  .dev-users {
+    white-space: normal;
+  }
+}
+
+/* ------------------------- COUNT-IN OVERLAY ------------------------- */
+/* The number a singer or a guitarist can see across the room. Nothing here
+   catches a click — it is a readout, not a control. */
+.count-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.count-num {
+  font-size: clamp(90px, 16vw, 200px);
+  font-weight: 800;
+  line-height: 1;
+  color: #f2f2f2;
+  text-shadow: 0 0 26px rgba(121, 168, 214, 0.75), 0 4px 18px rgba(0, 0, 0, 0.9);
+}
+
+.count-cap {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #9ec6e8;
+  background: rgba(10, 10, 10, 0.65);
+  border-radius: 2px;
+  padding: 3px 10px;
+}
+
+/* ---------------------------------------------------------------- cabo virtual
+   A janela que liga a master da DAW a uma sala SALA. Ela reusa .fx-window e
+   .reaper-btn; o que existe aqui é o barramento de jack, os dois medidores e a
+   lista de participantes. Nada estoura: as linhas quebram em vez de cortar. */
+
+.tcp-btn.btn-sala {
+  min-width: 38px;
+}
+
+.tcp-btn.btn-sala.lit {
+  background: #14532d;
+  border-color: #22c55e;
+  color: #dcfce7;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.55);
+}
+
+.sala-window {
+  width: 560px;
+}
+
+.sala-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 82vh;
+  overflow: auto;
+}
+
+.sala-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.sala-jack {
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid #3f3f3f;
+  border-radius: 3px;
+  background: #232323;
+}
+
+.sala-jack b {
+  color: #dcfce7;
+  font-size: 12px;
+}
+
+.sala-led {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  flex: none;
+}
+
+.sala-led.off {
+  background: #4b4b4b;
+  box-shadow: none;
+}
+
+.sala-hint {
+  font-size: 11px;
+  color: #9a9a9a;
+  line-height: 1.35;
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.sala-meters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.sala-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #9ec6e8;
+}
+
+.sala-bar {
+  height: 10px;
+  background: #141414;
+  border: 1px solid #3a3a3a;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sala-bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(to right, #15803d, #65a30d 60%, #d97706 82%, #dc2626);
+  transition: width 60ms linear;
+}
+
+.sala-bar.back i {
+  background: linear-gradient(to right, #1d4ed8, #38bdf8 70%, #a5f3fc);
+}
+
+.sala-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+  color: #9ec6e8;
+  flex: 1 1 150px;
+  min-width: 130px;
+}
+
+.sala-slider input[type='range'] {
+  width: 100%;
+}
+
+.sala-name {
+  flex: 1 1 160px;
+  min-width: 0;
+  background: #1b1b1b;
+  color: #eee;
+  border: 1px solid #3f3f3f;
+  border-radius: 2px;
+  padding: 5px 7px;
+  font-size: 12px;
+}
+
+.sala-link {
+  font-family: Consolas, Menlo, monospace;
+  font-size: 11px;
+  color: #9ec6e8;
+  background: #141414;
+  border: 1px solid #333;
+  border-radius: 2px;
+  padding: 6px 8px;
+  word-break: break-all;
+}
+
+.sala-peers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sala-peer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  background: #232323;
+  border: 1px solid #3f3f3f;
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #e5e5e5;
+}
+
+.sala-peer em {
+  font-style: normal;
+  font-size: 10px;
+  color: #8b8b8b;
+}
+
+.sala-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  color: #c9c9c9;
+  line-height: 1.35;
+}
+
+.sala-check input {
+  margin-top: 2px;
+  flex: none;
+}
+
+.sala-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.sala-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #9ec6e8;
+  min-width: 0;
+}
+
+.sala-fields input {
+  background: #1b1b1b;
+  color: #eee;
+  border: 1px solid #3f3f3f;
+  border-radius: 2px;
+  padding: 6px 7px;
+  font-size: 12px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.reaper-btn.primary {
+  background: linear-gradient(to bottom, #15803d, #116129);
+  border-color: #0b3d1f;
+  color: #ecfdf5;
+  font-weight: bold;
+}
+
+.reaper-btn.primary:hover {
+  background: linear-gradient(to bottom, #16a34a, #15803d);
+}
+
+.sala-error {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #fecaca;
+  background: #4c1d1d;
+  border: 1px solid #7f1d1d;
+  border-radius: 3px;
+  padding: 8px 10px;
+  word-break: break-word;
+}
+
+.sala-notice {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #fde68a;
+  background: #3f3010;
+  border: 1px solid #6b5314;
+  border-radius: 3px;
+  padding: 8px 10px;
+}
+
