@@ -726,6 +726,45 @@ async function runSelftest() {
     step('console sem erros', pageErrors.length === 0 ? 'limpo' : pageErrors.slice(0, 5).join(' | '))
     if (pageErrors.length > 0) report.ok = false
 
+    // What the page measures with, not what the machine says: the meter, the
+    // count-in and the clock are all painted from the animation frame, so a
+    // window the OS has covered or minimised shows up as a silent report — every
+    // measurement at zero, no code at fault. This line is what tells the two
+    // apart, and it is read before any leg starts clicking.
+    const fôlego = await win.webContents.executeJavaScript(`(async () => {
+      const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+      // A trace that outlives this leg. The moment the machine takes the window
+      // away, the animation frame stops, and every measurement made afterwards
+      // reads zero — so what matters is not only whether the page paints now, but
+      // when it stopped: visibilitychange is an event, and an event still arrives
+      // in a hidden page that no longer paints.
+      const rastro = window.__opdawPinta || (window.__opdawPinta = { quadros: 0, virou: [] });
+      if (!rastro.rodando) {
+        rastro.rodando = true;
+        const passo = () => { rastro.quadros += 1; requestAnimationFrame(passo); };
+        requestAnimationFrame(passo);
+        document.addEventListener('visibilitychange', () => {
+          rastro.virou.push(document.visibilityState + '@' + Math.round(performance.now()) + 'ms');
+        });
+      }
+      const janelas = [];
+      for (let i = 0; i < 3; i += 1) {
+        const antes = rastro.quadros;
+        await esperar(300);
+        janelas.push(rastro.quadros - antes);
+      }
+      return { vis: document.visibilityState, foco: document.hasFocus(),
+        minimized: ${JSON.stringify(!!win.isMinimized())}, visivel: ${JSON.stringify(!!win.isVisible())},
+        quadro: ${JSON.stringify(`${win.getBounds().width}x${win.getBounds().height}`)},
+        fps: janelas.join('/'), quadros: rastro.quadros, virou: rastro.virou.join(' ') };
+    })()`)
+    step(
+      'a página pinta (quadros em 3 janelas de 300ms, janela minimizada?)',
+      `fps ${fôlego.fps} · ${fôlego.vis}${fôlego.foco ? ' com foco' : ' sem foco'} · ` +
+        `app ${fôlego.visivel ? 'visível' : 'escondida'}${fôlego.minimized ? ' e MINIMIZADA' : ''} · ${fôlego.quadro}` +
+        `${fôlego.virou ? ` · virou ${fôlego.virou}` : ''}`,
+    )
+
     // A previous run that was interrupted — a plugin that took the process down,
     // a window closed by hand — leaves its clip and its takes in the app's own
     // session, and the next test then reads that as a broken product. Start from
@@ -1692,7 +1731,7 @@ async function runSelftest() {
     const liveRow = await win.webContents.executeJavaScript(`(async () => {
       const waitFor = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       const out = { mon: false, state: '', lit: false, refused: false, batches: 0, answered: 0, underruns: 0,
-        cresceu: false, pico: 0 };
+        cresceu: false, pico: 0, quadros: 0, vis: '', virou: '' };
       const head = document.querySelector('.fx-window .fx-header span')?.textContent || '';
       const trackName = head.split('\\u2014').pop().trim();
       const track = [...document.querySelectorAll('.tcp-track')]
@@ -1737,7 +1776,16 @@ async function runSelftest() {
       out.batches = depois.enviados;
       out.underruns = depois.atrasos;
       const nivel = () => Number.parseFloat(document.querySelector('.mcp-channel.master .mcp-meter-fill')?.style.height || '0') || 0;
+      // The meter is painted from the animation frame, so the frame rate is read
+      // in the same window as the level: a plugin that answered 63 blocks while
+      // the page painted nothing is a covered window, not a silent bridge.
+      let quadros = 0;
+      const rastro = window.__opdawPinta || { quadros: 0, virou: [] };
+      const antes = rastro.quadros;
       for (let i = 0; i < 30; i += 1) { out.pico = Math.max(out.pico, nivel()); await waitFor(50); }
+      out.quadros = rastro.quadros - antes;
+      out.vis = document.visibilityState;
+      out.virou = rastro.virou.slice(-4).join(' ');
       return out;
     })()`)
     step(`  a lane escuta o plugin em tempo real: ${JSON.stringify(liveRow.state)}`, liveRow.lit)
@@ -1748,7 +1796,8 @@ async function runSelftest() {
     )
     step(
       `o medidor da master com o plugin no caminho de saída (pico ${liveRow.pico.toFixed(1)}%, ` +
-        `monitor ${liveRow.mon ? 'aceso' : 'apagado'})`,
+        `monitor ${liveRow.mon ? 'aceso' : 'apagado'}, ${liveRow.quadros} quadros em 1,5s, página ${liveRow.vis}` +
+        `${liveRow.virou ? `, virou ${liveRow.virou}` : ''})`,
     )
 
     // Keep the window on screen for the picture: the insert with its knobs is
@@ -2642,6 +2691,17 @@ if (!single) {
   if (IS_SELFTEST) {
     app.commandLine.appendSwitch('use-fake-device-for-media-stream')
     app.commandLine.appendSwitch('use-fake-ui-for-media-stream')
+    // And the page has to keep painting. The meter, the count-in and the clock
+    // are all drawn from the animation frame, and Chromium stops that frame the
+    // moment the window is covered or sent to the background — which a test run
+    // is, on a desktop with other windows on it and with a second window (the
+    // Devices one) opened on top of the first. When it stops, every measurement
+    // reads zero and the report says the metronome is silent, which is a fact
+    // about the test box, not about the app. Only for the test: a producer's own
+    // window should still sleep when it is hidden.
+    app.commandLine.appendSwitch('disable-backgrounding-occluded-windows')
+    app.commandLine.appendSwitch('disable-renderer-backgrounding')
+    app.commandLine.appendSwitch('disable-background-timer-throttling')
   }
   app.on('second-instance', () => {
     if (!win) return
