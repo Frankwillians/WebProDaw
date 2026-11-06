@@ -31,7 +31,7 @@ interface SalaChannel {
 
 interface SalaLink {
   peerId: string | null
-  state: { connected: boolean; isPrivate?: boolean; room?: string; instance?: string | null; hosted?: boolean }
+  state: { connected: boolean; isPrivate?: boolean; room?: string; instance?: string | null; hosted?: boolean; name?: string | null }
   opts: { room: string; name: string; pass?: string }
   channels: Map<string, SalaChannel>
   useNode: (node: AudioNode, meta?: { kind?: 'daw' | 'mic'; trimDb?: number }) => GainNode
@@ -98,13 +98,15 @@ export function SalaCableWindow({
   notify,
 }: SalaCableProps) {
   const stored = useRef(readStored())
-  const [server, setServer] = useState(stored.current.server || 'https://localhost:5250')
+  const [server, setServer] = useState(stored.current.server || 'https://webteam-iota.vercel.app')
   const [room, setRoom] = useState(stored.current.room || 'geral')
   const [pass, setPass] = useState('')
   const [name, setName] = useState(stored.current.name || 'Minha DAW')
   const [lanes, setLanes] = useState(stored.current.lanes)
   const [micAlong, setMicAlong] = useState(false)
-  const [hostOnly, setHostOnly] = useState(true)
+  // internet é o caminho do app publicado; a caixa de "só rede local" continua
+  // aqui para o teste na mesma máquina, mas começa desmarcada.
+  const [hostOnly, setHostOnly] = useState(false)
 
   const [live, setLive] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -225,6 +227,9 @@ export function SalaCableWindow({
         ice: hostOnly ? { hostOnly: true } : { stun: 'stun:stun.l.google.com:19302' },
       })
       linkRef.current = link
+      // o servidor sanitiza o nome (24 caracteres, sem símbolos de controle).
+      // mostrar o que ele aceitou evita a janela dizer uma coisa e a sala outra.
+      if (link.state?.name) setName(link.state.name)
       link.useNode(send, { kind: 'daw', trimDb })
       link.setLimiter(limiter)
       // o mudo do cabo mora no engine, não no SDK: os dois ganhos se multiplicam
@@ -510,7 +515,7 @@ export function SalaCableWindow({
               </label>
               <label className="sala-check">
                 <input type="checkbox" checked={hostOnly} onChange={(event) => setHostOnly(event.target.checked)} />
-                <span>só rede local (sem STUN/TURN — mais rápido, não atravessa 4G)</span>
+                <span>só na mesma máquina/rede (sem STUN — atalho de teste; não alcança a internet)</span>
               </label>
 
               <div className="sala-row">
